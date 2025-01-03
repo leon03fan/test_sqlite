@@ -1,0 +1,23 @@
+from db_init import engine,t_person
+from sqlalchemy.sql import and_, or_
+
+with engine.connect() as connection:
+    # query = t_person.select().where(t_person.c.name == 'tom02')
+    # query = t_person.select().where(t_person.c.name.like('%tom%')).where(t_person.c.id == 3)
+    query = t_person.select().where(
+        or_(
+            t_person.c.name.like('%tom%'),
+            and_(
+                t_person.c.name == "jerry04",
+                t_person.c.birthday == '1999-03-01'
+            )
+        )
+    )
+
+
+
+    result_set = connection.execute(query)
+
+    row = result_set.fetchall()
+    print(row)
+
